@@ -7,6 +7,7 @@ export function getStudent(req, res) {
     });
   });
 }
+//testing commt
 
 export function createStudent(req, res) {
   const student = new Student(req.body);
