@@ -96,3 +96,8 @@ export function getuser(req, res) {
     });
   });
 }
+
+
+export function createnewstudent(){
+
+}
