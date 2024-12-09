@@ -100,4 +100,6 @@ export function getuser(req, res) {
 
 export function createnewstudent(){
 
+  console.log("dil;m");
+
 }
