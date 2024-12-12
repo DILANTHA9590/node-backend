@@ -5,7 +5,7 @@ export async function getproducts(req, res) {
 
  res.json({
 
-  list : productlist
+  getlist : productlist
 
  })
 }
