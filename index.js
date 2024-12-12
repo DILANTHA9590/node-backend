@@ -6,11 +6,19 @@ import studentRouter from "./routes/studentRouter.js";
 import productRouter from "./routes/productRouter.js";
 import userRouter from "./routes/userRouter.js";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+
+dotenv.config();//meken .env eka run karagannava api meken venne .env kiyana file eka api lord karaganna me file eka athulata ita pass apata 
 
 const app = express();
 
-const mongoUrl =
-  "mongodb+srv://myadmin:4321@cluster0.ktccj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// const mongoUrl =
+//   "mongodb+srv://myadmin:4321@cluster0.ktccj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+//kalinmethanima thama connection eka hadan thibbe dan uda config eken haduva me vidihata
+
+const mongoUrl = process.env.MONGO_DB_URI //mekedi apata databse eke value import karala me veriable ekata daganna puluvan
+
 
 mongoose.connect(mongoUrl, {});
 const connection = mongoose.connection;
