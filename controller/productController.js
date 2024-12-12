@@ -1,7 +1,7 @@
 import Product from "../modules/products.js";
 
 export async function getproducts(req, res) {
- const productlist = Product.find()
+ const productlist = await Product.find()
 
  res.json({
 
