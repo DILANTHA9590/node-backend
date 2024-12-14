@@ -1,9 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import Student from "./modules/students.js";
+
 import studentRouter from "./routes/studentRouter.js";
-import productRouter from "./routes/productRouter.js";
+
 import userRouter from "./routes/userRouter.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -43,7 +43,7 @@ app.use((req, res, next) => {
   // methanadi karanne evana token eka null nemei nam e taken eka verfy karala denna kiyala e kiyanne encrypt
   // token eka methanmdi decrypt kjaragannav
   if (token != null) {
-    jwt.verify(token, "cbc-secret-key-7903", (erorr, decoded) => {
+    jwt.verify(token,process.env.SECRET_KEY, (erorr, decoded) => { //evagema scret key eka pena ekath prashnayak nisa api ekath daganna .env ekata
       //erorr ekak avoth mehama natham
 
       if (!erorr) {
@@ -86,7 +86,7 @@ app.use((req, res, next) => {
 });*/
 
 app.use("/api/students", studentRouter);
-app.use("/api/products", productRouter);
+
 app.use("/api/users", userRouter);
 
 app.post("/", (req, res) => {
