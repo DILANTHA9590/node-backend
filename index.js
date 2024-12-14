@@ -72,7 +72,7 @@ app.use((req, res, next) => {
     return res.status(401).json({ message: "Invalid token format" });
   }
 
-  const token = authHeader.replace("Bearer ", "");
+  const token = authHeader.replace("Bearer ", "");0
 
   try {
     const decoded = jwt.verify(token, "cbc-secret-key-7903");
