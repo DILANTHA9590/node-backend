@@ -14,6 +14,37 @@ export function userCreation(req, res) {
   const getUserNewData = req.body; // dan api uda vidihata eka parama usr details danna ba api eka hash kara aganna oni e nisa userge details venama
   // veriable  ekkata dagannava it basse0
 
+// meka api passe dagaththe 
+  if(getUserNewData.type == "admin"){ //api methandi balana admin account ekk acreate karannada  hadanne kiyala ethakota  get new eke type eka
+    //adminta samanan api balanava 
+
+    if(req.user==null){//request eke nullda kiyala methandi ape token eka decode karala details enava login vela naththam methanata data enne na\
+
+      console.log(req.user);
+      res.json({
+        
+        
+        message : "please login as administrator to create admin account " // nul nam api  kiyanava login vela enna kiyala admin  account eken
+      })
+      return
+
+    }
+
+
+    if(req.user.type != "admin"){//methanadi api decode karala evana token eke type eka admin da kiyala balanava admin nemenam
+
+       res.json({
+        message : "please login as administrator to create admin account " // nul nam api  kiyanava login vela enna kiyala admin  account eken
+      })
+      return
+
+    }
+  }
+
+   
+
+  // api  methanadi balanava meka passe damme melkata kalin thibbe pahala password hash karana eke idala
+
   //methna krnne req bdy eke ena detils valin password ekavitahrak aran eka hash karala
   //e ena eka 10 parak hash karanava
 
