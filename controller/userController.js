@@ -119,6 +119,37 @@ export function loginUser(req, res) {
     });
 }
 
+
+
+export function isadmin(req){
+  if(req.user == null){
+    return false
+  }
+
+  if(req.user.type != "admin"){
+    return false
+  }
+
+
+  return true
+}
+
+
+export function  isCustomer(req){
+
+  if(req.user == null){
+    return false
+  }
+
+  if(req.user.type != "customer"){
+    return false
+
+  }
+
+  return true
+
+}
+
 //get databse have all user details
 export function getuser(req, res) {
   User.find().then((usersList) => {
