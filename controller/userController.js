@@ -1,7 +1,12 @@
 import User from "../modules/user.js ";
 import jwt from "jsonwebtoken";
+import  dotenv  from "dotenv";
+
+
 
 import bcrypt, { hash } from "bcrypt";
+
+dotenv.config();
 
 /// create user
 export function userCreation(req, res) {
@@ -100,7 +105,7 @@ export function loginUser(req, res) {
               profilePic: user.profilePic,
             },
 
-            "cbc-secret-key-7903"
+            process.env.SECRET_KEY
           );
           console.log(token); //meken thamnai json webtoken eka genarate karanne
 
