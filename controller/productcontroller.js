@@ -2,58 +2,51 @@ import Product from "../modules/product.js";
 import { isadmin } from "./userController.js"; 
 
 
-  export async  function createNewProduct(req,res){
-
-
-    if(!isadmin(req)){//api dan user controller eke hadagaththa function eka check karnava  product eka create karanna yanne admin ekenekk nemeida kiyala
-      res.json({//methanin check kare is admin function eka flase nam
-        message : "Please login as administartor to add product"//nemei nam false
-      })
-
-      return
+export async function createNewProduct(req, res) {
+  try {
+    // Check if the user is an admin
+    if (!isadmin(req)) {
+      return res.json({
+        message: "Please login as administrator to add product",
+      });
     }
 
-try {
+    // Check if the product already exists
+    const productexist = await Product.findOne({ productId: req.body.productId });
 
-    const  createproduct =  await new Product(req.body);
-   createproduct.save()
-   res.json({
-    message : " product created Succesfully"
-   })
+    if (productexist) {
+      return res.json({
+        message: "This product already exists",
+      });
+    }
 
-    
-} catch (error) {
+    // Create and save the new product
+    const newProduct = new Product(req.body);
+    await newProduct.save();
 
-  res.json({
-    message : "Error :" + error //api nitharama  "product not created vge eva noyava nitharam eroor msg ekk front end ekata yavnna oni "
-  })
-    
+    // Respond with success
+    res.json({
+      message: "Product created successfully",
+    });
+  } catch (error) {
+    // Catch and handle errors
+    res.json({
+      message: "Error: " + error.message,
+    });
+  }
 }
 
-const  createproduct =  await new Product(req.body);
-
-createproduct.save().then(()=>{
-
-    res.json("product created successfully");
-
-   }).catch((erorr)=>{
-
-    res.json({
-        message : "Erorr :" + erorr
-    })
-
-   })
-
-   }
 
 
-  export  async function getProduct(req,json){
+ 
+  export  async function getProduct(req,res){
 
 try {
 
-  const productlist = await  Product.find({name : req.body.name})
+  const productlist = await  Product.find({})//productList is an array because Product.find() 
+  // in Mongoose returns an array of documents (even if it contains zero or one document). Here's how it works:
   res.json({
-    list : productlist
+    list : productlist 
   })
   
   
@@ -70,12 +63,67 @@ try {
 
 
    }
-   
+
+ 
+  //  export async function deleteProduct(req,res){
 
 
+  //   if(!isadmin(req)){
+
+  //     res.json({
+  //         message : " Please login as administartor to add product "
+  //     })
+
+
+  //     return
+  //   }
+
+  //   try {
+
+  //     await Product.deleteOne({productId : req.body.productId});
+      
+
+  //     res.json({
+
+  //       message : "product is deleted " +message.productId
+
+  //     })
+      
+  //   } catch (error) {
+
+
+  //     res.json({
+  //        message : "product not found"
+  //     })
+
+     
+      
+  //   }
 
     
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+   
 
