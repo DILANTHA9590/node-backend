@@ -4,6 +4,7 @@ import  dotenv  from "dotenv";
 
 
 
+
 import bcrypt, { hash } from "bcrypt";
 
 dotenv.config();
@@ -20,7 +21,7 @@ export function userCreation(req, res) {
   // veriable  ekkata dagannava it basse0
 
 // meka api passe dagaththe 
-  if(getUserNewData.type == "admin"){ //api methandi balana admin account ekk acreate karannada  hadanne kiyala ethakota  get new eke type eka
+  if(getUserNewData.type !== "admin"){ //api methandi balana admin account ekk acreate karannada  hadanne kiyala ethakota  get new eke type eka
     //adminta samanan api balanava 
 
     if(req.user==null){//request eke nullda kiyala methandi ape token eka decode karala details enava login vela naththam methanata data enne na\
@@ -125,7 +126,11 @@ export function loginUser(req, res) {
 }
 
 
-
+//methandi apata adminta vitharai product ekk create karanna avsathva hadala denne
+//api e vadeta methana function dekk hadagannava mokada apata natham nitharaMA MEKA AVSHAYA THAN HAMA THANAMA ADMIN DA CUSTEMR DA KIYALA
+// code karala balanna venava mehema karama avshaya thaniun apta cl karganna pulvn
+//evna request eke user null saha evan user type eka admin nemeida kiyala
+// ehema num false  ehema naththam true
 export function isadmin(req){
   if(req.user == null){
     return false
