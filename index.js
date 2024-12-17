@@ -7,6 +7,7 @@ import studentRouter from "./routes/studentRouter.js";
 import userRouter from "./routes/userRouter.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import productRouter from "./routes/productRouter.js";
 
 
 dotenv.config();//meken .env eka run karagannava api meken venne .env kiyana file eka api lord karaganna me file eka athulata ita pass apata 
@@ -88,6 +89,8 @@ app.use((req, res, next) => {
 app.use("/api/students", studentRouter);
 
 app.use("/api/users", userRouter);
+
+app.use("/api/products",productRouter);
 
 app.post("/", (req, res) => {
   console.log(req.body);
