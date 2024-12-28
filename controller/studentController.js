@@ -26,9 +26,23 @@ export function createStudent(req, res) {
 }
 
 export function deleteStudent(req, res) {
-  Student.deleteOne({ name: req.body.name }).then(() => {
-    res.json({
-      message: "student deleted",
+
+
+  try {
+
+    Student.deleteOne({ name: req.body.name }).then(() => {
+      res.json({
+        message: "student deleted",
+      });
     });
-  });
+    
+  } catch (error) {
+
+
+    res.json({
+      message : ""
+    })
+    
+  }
+  
 }
