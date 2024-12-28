@@ -8,17 +8,28 @@ import userRouter from "./routes/userRouter.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import productRouter from "./routes/productRouter.js";
+import orderRouter from "./routes/orderRouter.js";
+import cors from "cors";// METHANA API CORS INSTALL KARALA IMPORT KARANA THIYENAVA MEKE VISTHARAYA FOTNEND EKE ADMIN ORDER KE THIYENAVA UDA
+
+
+
+
 
 
 dotenv.config();//meken .env eka run karagannava api meken venne .env kiyana file eka api lord karaganna me file eka athulata ita pass apata 
 
+
 const app = express();
+
+app.use(cors())//mona vidihe req ekk dammath cors kiyana eka danmna
 
 // const mongoUrl =
 //   "mongodb+srv://myadmin:4321@cluster0.ktccj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 //kalinmethanima thama connection eka hadan thibbe dan uda config eken haduva me vidihata
 
 const mongoUrl = process.env.MONGO_DB_URI //mekedi apata databse eke value import karala me veriable ekata daganna puluvan
+
+
 
 
 mongoose.connect(mongoUrl, {});
@@ -38,7 +49,10 @@ app.use((req, res, next) => {
 
   const token = req.header("Authorization")?.replace("Bearer ", ""); //uda token eka apata beaer kiyala kallk thiyenava api eka methanin his thanak thiayala replace karanava ain karagannava
 
-  console.log(token); //ekae itapasse token function ekakata dala priont karama bear eka ain venava api meka ain karanne api evana token eke bearer kiyala ekk nane
+  //console.log(token); //ekae itapasse token function ekakata dala priont karama bear eka ain venava api meka ain karanne api evana token eke bearer kiyala ekk nane
+
+
+  console.log("///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
   // e nisa eka ain karaganna
 
   // methanadi karanne evana token eka null nemei nam e taken eka verfy karala denna kiyala e kiyanne encrypt
@@ -91,6 +105,7 @@ app.use("/api/students", studentRouter);
 app.use("/api/users", userRouter);
 
 app.use("/api/products",productRouter);
+app.use("/api/Orders",orderRouter);
 
 app.post("/", (req, res) => {
   console.log(req.body);
