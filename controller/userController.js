@@ -113,12 +113,21 @@ export function loginUser(req, res) {
           res.json({
             message: "user logging",
             token: token,
+            user : {//me tika api haduve front end eke login eka hadanakota mokda token ekk vitharai ynne 
+              // mehema karma user details tikath lassnata pennava apiata meka type eka aran userlava e e page valata redirect karanna lesi
+              firstName : user.firstName,
+              lastName : user.lastName,
+              type : user.type,
+              profilePic : user.profilePic,
+              email : user.email  ///api metahana passwor d kea yavanne  na e va balla yuavanna pni pasword eka yauvama
+              //eka okotama penava evath thorala berala thama yavanna oni
+            }
           });
 
           // })
         } else {
           res.json({
-            message: "password incorrect",
+            message: "User not login, incorrect user name or password",
           });
         }
       }
