@@ -52,7 +52,7 @@ app.use((req, res, next) => {
   //console.log(token); //ekae itapasse token function ekakata dala priont karama bear eka ain venava api meka ain karanne api evana token eke bearer kiyala ekk nane
 
 
-  console.log("///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
+  
   // e nisa eka ain karaganna
 
   // methanadi karanne evana token eka null nemei nam e taken eka verfy karala denna kiyala e kiyanne encrypt
