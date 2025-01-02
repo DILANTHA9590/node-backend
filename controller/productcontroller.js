@@ -11,14 +11,21 @@ export async function createNewProduct(req, res) {
       });
     }
 
-    // Check if the product already exists
-    const productexist = await Product.findOne({ productId: req.body.productId });
 
-    if (productexist) {
-      return res.json({
-        message: "This product already exists",
-      });
-    }
+  
+    //apiata product id eka balala hadanna avshaya na mokada komoath id eka promary key eka ape 
+    //api aye ekk add karath eka kohomath yanne catch block ekata habay yanne 200 e kiyanne ok 
+    //api e nisa manuaklly vensa karanna oni 403 500 vge status eror4 vlata ethakota hari
+    //nathtam front end eke try eka athulata thama meka yanne cartch ekata gihin erooor eka ahuvenne na
+    //ethakota 200 neme yanne enisa apata message eka ganna puluvan
+    // // Check if the product already exists
+    // const productexist = await Product.findOne({ productId: req.body.productId });
+
+    // if (productexist) {
+    //   return res.json({
+    //     message: "This product already exists",
+    //   });
+    // }
 
     // Create and save the new product
     const newProduct = new Product(req.body);
@@ -29,9 +36,24 @@ export async function createNewProduct(req, res) {
       message: "Product created successfully",
     });
   } catch (error) {
+  
+
     // Catch and handle errors
-    res.json({
-      message: "Error: " + error.message,
+
+    //apiata product id eka balala hadanna avshaya na mokada komoath id eka promary key eka ape 
+    //api aye ekk add karath eka kohomath yanne catch block ekata habay yanne 200 e kiyanne ok 
+    //api e nisa manuaklly vensa karanna oni 403 500 vge status eror4 vlata ethakota hari
+    //nathtam front end eke try eka athulata thama meka yanne cartch ekata gihin erooor eka ahuvenne na
+    //venne methgana status eka dala nathinisa meka kelinnama yavana front end eke try caTCH EKTH TRY EKATA
+    ///API status eka dala thibbama eka 200 anthuva 403 erorr ekk vidihatra yanava eka allaganava front end catch eken
+
+    // evagema loku loku project  if if if condtion dala  me vge error  ekk avoth api e ena error eka pilibadava
+    //sampuranava vistharayk ho 
+    //e eorr eka pilibadava status code eka  front end eka5ta yavana eka
+    //ehema karanavanam eka mara quality
+    res.status(403).json({
+      message: "This product already exists "+error
+ 
     });
   }
 }
@@ -65,42 +87,40 @@ try {
    }
 
  
-  //  export async function deleteProduct(req,res){
+    export async function deleteProduct(req,res){
 
 
-  //   if(!isadmin(req)){
+    if(!isadmin(req)){
 
-  //     res.json({
-  //         message : " Please login as administartor to add product "
-  //     })
+    return  res.status(403).json({
+          message : " Please login as administartor to delete product "
+     })
 
+   }
 
-  //     return
-  //   }
+    try {
 
-  //   try {
-
-  //     await Product.deleteOne({productId : req.body.productId});
+       await Product.deleteOne({productId : req.params.productId});
       
 
-  //     res.json({
+       res.json({
 
-  //       message : "product is deleted " +message.productId
+        message : "product is deleted " +message.productId
 
-  //     })
+     })
       
-  //   } catch (error) {
+     } catch (error) {
 
 
-  //     res.json({
-  //        message : "product not found"
-  //     })
+     res.json({
+        message : "product not found"
+       })
 
      
       
-  //   }
+    }
 
-    
+  }
 
 
 
