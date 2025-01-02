@@ -11,7 +11,7 @@ productRouter.post("/",createNewProduct);
 
 productRouter.get("/", getProduct);
 
-productRouter.delete("/", deleteProduct);
+productRouter.delete("/:productId", deleteProduct);
 
 
 
