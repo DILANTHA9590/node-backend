@@ -1,7 +1,7 @@
 import express from "express"
 
 
-import { createNewProduct,getProduct } from "../controller/productcontroller.js"
+import { createNewProduct,deleteProduct,getProduct } from "../controller/productcontroller.js"
 
 
 const productRouter = express.Router();
@@ -10,6 +10,8 @@ const productRouter = express.Router();
 productRouter.post("/",createNewProduct);
 
 productRouter.get("/", getProduct);
+
+productRouter.delete("/", deleteProduct);
 
 
 
