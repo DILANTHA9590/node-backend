@@ -125,10 +125,40 @@ try {
 
 
 
+export async function updateProduct(req,res){
+  if(!isadmin){
+    return res.status(403).json({
 
+        message : " Please login as administrator to update product "
 
+    })
 
+    
+  }
 
+  try {
+
+    const productId = req.params.productId
+    const newProductData = req.body
+
+    await Product.updateOne(
+      {productId:productId},
+      newProductData
+
+    )
+
+    res.json({
+      message : "Product Updated Successfully"
+    })
+    
+  } catch (error) {
+
+    res.json({
+      message: "Fail to update product"
+    })
+    
+  }
+}
 
 
 
