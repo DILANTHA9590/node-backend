@@ -142,8 +142,8 @@ export async function createOrder(req,res){
 
             newproductArrey[i] = {
                 name: product.productName,
-                price : product.price,
-                quantity : newOrderData.orderedItems[i].quantity,
+                price : product.lastPrice,
+                quantity : newOrderData.orderedItems[i].qty,
                 image : product.images[0]
 
 
@@ -271,3 +271,62 @@ export async function getOrderList(req,res){
 
 
 }
+
+
+export async function getQuotes(req,res){
+    try {
+        const newOrderData = req.body;
+    
+        const newProductArray = [];
+
+console.log(req.body)
+        let total =0;
+        let labeldTotal =0;
+
+    
+        for (let i = 0; i < newOrderData.orderedItems.length; i++) {
+            const product = await Product.findOne({
+                productId: newOrderData.orderedItems[i].productId,
+            });
+    
+          
+// meka eka rumak avata passe last price ekai label price ekai ekata ekathuvenava dan thiyena agatayata ekathukaranava
+
+            labeldTotal+= product.price * newOrderData.orderedItems[i].qty
+// api label priice eken uda eken pennuvata api gevanne me last price eke egana dan methandi venne 
+//add tocart damu okkm aitem vakla uda price eka dsaha methata last price aragena thiyenne api
+            total += product.lastPrice * newOrderData.orderedItems[i].qty
+
+            newProductArray[i] = {
+                name: product.productName,
+
+                //api last price eika gaththa mokda api qty chckout venakota okkom a ekathuva ganne mejken
+                price: product.lastPrice,
+                labeledPrice : product.price,
+
+                quantity: newOrderData.orderedItems[i].qty,
+                image: product.images[0],
+            };
+            
+        }
+            console.log(newProductArray);
+            
+            newOrderData.orderedItems = newProductArray;
+            newOrderData.total = total;   
+            
+            res.json({
+
+                orderedItems:newProductArray,
+                total:total,
+                labeldTotal:labeldTotal,
+
+            });
+        
+        }catch(error){
+            res.json({
+                message : error.message
+            });
+
+        }
+    }
+            
