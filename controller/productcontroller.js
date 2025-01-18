@@ -1,4 +1,5 @@
 import Product from "../modules/product.js";
+
 import { isadmin } from "./userController.js"; 
 
 
@@ -162,8 +163,30 @@ export async function updateProduct(req,res){
 
 
 
+//meka api token admin baklanne ana meka product ekata adala data tika ganna product overwiev ekata haduve
+export async function getProductById(req,res){
 
 
+  try {
+    const productId =  req.params.productId
+  
+  const product = await Product.findOne({productId:productId})
+
+  res.status(200).json({
+    product
+  })
+
+
+  } catch (error) {
+    res.status(500).json({
+      message : "hjlkjkl"
+    })
+    
+  }
+
+  
+
+}
 
 
 
