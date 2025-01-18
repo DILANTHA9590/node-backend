@@ -1,6 +1,6 @@
 
 import Order from "../modules/order.js";
-import { isCustomer } from "./userController.js";
+import { isadmin, isCustomer } from "./userController.js";
 import Product from "../modules/product.js";
 
 //api me order details okkoma nikan eliyen dila iisella balala inna oni
@@ -214,10 +214,15 @@ export async function createOrder(req,res){
    
    
           const order = new Order(newOrderData)
-            await order.save()
+
+          //methanadi api meka vble ekkdala gennaganava mokada meka thama api penna oni place order karama oid ekath ekka
+        //   e kiuve  checkout dunnama meka en thama oredr id ekk vatila hariyata pennane
+         const saveOrder =   await order.save()
    
             res.status(200).json({
-                message : "Order created"
+                message : "Order created",
+                // e save karapu order eka api methanin fontend ekata yavanava
+                order :saveOrder
             })
    
           
@@ -253,15 +258,42 @@ export async function createOrder(req,res){
 }
 
 
-
+//api methanahadanna puluvan customer log unama eya dapu order tika pennanai admin log unaam  eyata 
+// okkogema  order tika pennai hdaganna puluavan
 export async function getOrderList(req,res){
 
+  
 
     try {
-        const getorder = await Order.find({});
-        res.status(200).json({
-            list : getorder
-        })
+        // const getorder = await Order.find({});
+        // res.status(200).json({
+        //     list : getorder
+        // })
+
+
+        if(isCustomer){
+            //methandi api cusmer avoth eyage order tika pennava order eke eyage e mail ekata adalava
+    
+            const orders =  Order.find({email:req.user.email})
+    
+            res.json(orders);
+            return;
+    
+        }
+    
+        else if(isadmin(req)){
+            const orders = await Order.find({});
+            res.json(orders);
+        }
+    
+    
+        else{
+            res.json({
+                message : "Please Login to view Order"
+    
+            })
+        }
+    
         
     } catch (error) {
         res.status(500).json({
