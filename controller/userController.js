@@ -6,6 +6,7 @@ import  dotenv  from "dotenv";
 
 
 import bcrypt, { hash } from "bcrypt";
+import axios from "axios";
 
 dotenv.config();
 
@@ -185,3 +186,119 @@ export function createnewstudent(){
 
 }
 
+//api meka saralava vada karana hati therum ganna balamu advanced karanna kalin api hithamu dan meka enne ape req eke body
+//  eka kiyala ehema avoth api  eka gnnava token vble ekkeata mehema
+export async function googleLogin(req,res){
+
+  //dan apita siida venava userge visthara tika token ekata adla va danaganna
+    //mekata apata googla api api url ekata apita siida venav get ekk gahal details ganna
+    // apta mulinm a front end ekedi thama api calll gahanna oni axios dan apata backend eke idalath 
+    // dan  apata axios oni venava mokda dan apita backe nd eken googl e api ekkata
+    // api ekk gahala google token eka dta tika ganna oni e nisa apita back ekakath axios install 
+    //kraganna oni venava
+  
+  const token = req.body.token 
+  try {
+    const response = await axios.get(
+      'https://www.googleapis.com/oauth2/v3/userinfo',{
+        //api front end eken back ekata headr eka athule token eka euva vgema api 
+        //MEKETH TOKEN EKA YAVANA E VGEMA GOOGLE API END POINT EKATA YAVALA ENA RES TIKA
+        // RESPONSE  V BLE EKAT GANNAV 
+        headers : {
+          Authorization : `Bearer ${token}`
+        }
+
+    })
+
+    // apita  dan mehema evala hariyanne na google api eken apva data verify karaganna oni
+
+
+    // res.json({
+    //   message:"Google login successful",
+    
+    //   user : response.data // ita passe uda response v ble eke ena data tika api balana res eeke ena data
+    // vala user kenek  innvda kiyala
+    // })
+
+    const email = response.data.email
+
+    //check if user exist
+    // api  ilagat balanava user log venna hdana email ekai db mail ekai samanda kiyala
+
+    const usersList = await User.find({email:email})
+
+    // ita passe ena user list eke me user innavada kiaya ita kalin balana user list eka emtydsa nadad kiyala
+
+    if(usersList.length > 0){
+     const user = usersList[0]
+     const token = jwt.sign({
+      email : user.email,
+      firstName :user.firstName,
+      lastName : user.lastName,
+      isBlock : user.isBlock,
+      type :user.type,
+      profilePic : user.profilePic
+
+    }, process.env.SECRET_KEY)
+    res.json({
+      message : " User logged in",
+      token : token,
+      user : {
+        firstName :user.firstName,
+        lastName : user.lastName,
+        type : user.type,
+        profilePic : user.profilePic,
+        email : user.email
+      }
+
+    })
+    }else{
+      //create new user
+    const newUserData = {
+      email : email,
+      firstName : response.data.given_name,
+      lastName : response.data.family_name,
+      type : "customer", 
+      password : "#ggggg",
+      profilePic : response.data.profilePic
+
+}
+
+const user = new User(newUserData)
+user.save().then(()=>{
+  res.json({
+    message : "User Created"
+  })
+
+
+}).catch((error)=>{
+
+  res.json({
+    message : "User not created"
+  })
+ 
+
+})
+
+
+
+    }
+
+
+
+
+
+
+    
+  } catch (error) {
+    console.log(error);
+
+    res.json({
+      message : "Google login failed"
+      
+    })
+    
+  }
+
+ 
+}
