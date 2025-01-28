@@ -189,7 +189,47 @@ export async function getProductById(req,res){
 }
 
 
+// api  metha na hadagannava search vena fucntion ekk podi vachana kallak avata passe search vena function ekk
 
+
+
+export async function searchProduct(req,res){
+
+  //api methanadi parameter valin pass vena search vennaoni de ganna oni
+  // eya type karala thiuyenne mkona vage namakda/
+  //kiyala query ekata thapa pass vela enne
+  const query = req.param.quary
+
+  try {
+
+    
+// api  methana regex use karala thiyenne regex valin api karanne saralavama swtring ekkata string ekak smanda balana eka methan a nam 
+//tha vidihatakata kiuvoth foramt ekkata thiyeda kiyala//eg vachana thiye formate ekka me vachanethiyeda kiyala 
+// balanna thama me regex one meka loku padamak 
+  const products = await Product.find({name :{$regex :"/"
+    +query+"/", $options : "i"
+// api  ala iriddeka gahuve wakye onima thanaka thiyenam eka galappala denna kioyala
+// etha  kota api dena name eka thiyena onima thanak avada karanava
+
+  }})
+
+  res.status(200).json({
+    products
+  })
+    
+  } catch (error) {
+
+    res.status(500).json({
+       e
+    
+    })
+    
+  }
+
+
+
+
+}
 
 
 
