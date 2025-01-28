@@ -182,9 +182,122 @@ export function getuser(req, res) {
 
 export function createnewstudent(){
 
-  console.log("relearn");
+
 
 }
+
+
+// export async function googleLogin(req,res){
+
+  
+//   const token = req.body.token 
+//   console.log("mytoken",token);
+
+//   try {
+//     const response = await axios.get(
+//       'https://www.googleapis.com/oauth2/v3/userinfo',{
+       
+//         headers : {
+//           Authorization : `Bearer ${token}`
+//         }
+
+//     })
+
+    
+    
+//     // api  res eke email eke ena email ek a vble ekkata degena eka balanava db eke mail ekai samanda kiyala kiyala
+//     console.log("Google endpoint response:", response.data); 
+//     const email = response.data.email
+
+//     //check if user exist
+    
+//     const usersList = await User.find({email:email})
+
+   
+//     if(usersList.length > 0){
+//      const user = usersList[0]
+//      const token = jwt.sign({
+//       email : user.email,
+//       firstName :user.firstName,
+//       lastName : user.lastName,
+//       isBlock : user.isBlock,
+//       type :user.type,
+//       profilePic : user.profilePic
+
+//     }, process.env.SECRET_KEY)
+//     console.log("db return email", user);
+
+   
+//     res.json({
+//       message : " User logged in",
+//       token : token,
+//       user : {
+//         firstName :user.firstName,
+//         lastName : user.lastName,
+//         type : user.type,
+//         profilePic : user.profilePic,
+//         email : user.email
+//       }
+
+
+//     })
+
+//     console.log("user gioogle login token"+token);
+//     console.log(user);
+//     }else{
+//       //create new user
+//     const newUserData = {
+      
+     
+//       email : email,
+//       firstName : response.data.given_name,
+//       lastName : response.data.family_name,
+//       type : "customer", 
+//       password : "#ggggg",
+//       profilePic : response.data.picture
+
+// }
+
+// const user = new User(newUserData)
+// user.save().then(()=>{
+//   res.json({
+//     message : "User created"
+//   })
+
+
+// }).catch((error)=>{
+
+//   res.json({
+//     message : "User not created"
+//   })
+ 
+
+// })
+
+
+
+//     }
+
+
+
+
+
+
+    
+//   } catch (error) {
+//     console.log(error);
+
+//     res.json({
+//       message : "Google login failed"
+      
+//     })
+    
+//   }
+
+ 
+// }
+
+
 
 //api meka saralava vada karana hati therum ganna balamu advanced karanna kalin api hithamu dan meka enne ape req eke body
 //  eka kiyala ehema avoth api  eka gnnava token vble ekkeata mehema
@@ -198,6 +311,8 @@ export async function googleLogin(req,res){
     //kraganna oni venava
   
   const token = req.body.token 
+  console.log("mytoken",token);
+
   try {
     const response = await axios.get(
       'https://www.googleapis.com/oauth2/v3/userinfo',{
@@ -205,29 +320,48 @@ export async function googleLogin(req,res){
         //MEKETH TOKEN EKA YAVANA E VGEMA GOOGLE API END POINT EKATA YAVALA ENA RES TIKA
         // RESPONSE  V BLE EKAT GANNAV 
         headers : {
-          Authorization : `Bearer ${token}`
+          Authorization :` Bearer ${token}`
         }
 
     })
 
     // apita  dan mehema evala hariyanne na google api eken apva data verify karaganna oni
-
+    // console.log("Google endpoint response:", response.data); meken apata json data ballana puluvan
+    // apata  ape token eka yavuvma google end point keta eyala methanata api datta
+    // ena ahti mama yatin  ma dala athi
+    //denava apata e token ekata adla user ge all details tika response eke
 
     // res.json({
     //   message:"Google login successful",
     
-    //   user : response.data // ita passe uda response v ble eke ena data tika api balana res eeke ena data
-    // vala user kenek  innvda kiyala
-    // })
-
+    // api  res eke email eke ena email ek a vble ekkata degena eka balanava db eke mail ekai samanda kiyala kiyala
+    console.log("Google endpoint response:", response.data); 
     const email = response.data.email
 
     //check if user exist
     // api  ilagat balanava user log venna hdana email ekai db mail ekai samanda kiyala
 
+    //   user : response.data // ita passe uda response v ble eke ena data tika api balana res eeke ena data
+    // vala user kenek  innvda kiyala
+    //saralavama kiuvoth ekaparak hari eya google eken log vela naththam api e google apiekata token eka yavala 
+    // ena user ge details api db eke save vena vidihata hadaganna yanne
+    //ethakota devani para eya log venakota e email eka ape db eke save vela nisa  eya log una user kenek ekai methanin ppahala karanna yanne ekata
+    // api dam methanin iiiselama check akrala balanava user genamin mail ekk denata math mail eke thiyenavad  kiyala
+
+    // })
+
     const usersList = await User.find({email:email})
 
-    // ita passe ena user list eke me user innavada kiaya ita kalin balana user list eka emtydsa nadad kiyala
+   // iota passe api balanava eken ena email ekata adala ena userlist arrey eka eka userkenek hari innavda kiyala
+   //emtyda kiyala vge thama balanna ehema innavanam e user object arrey eke 0 veni ekkenav a gannava
+   //kojhomath methanata ekkani thamai enne
+
+  //  iinavanam  api index eke jwt webtoken  ekk hadagaththa vge
+
+  //ita passe e adala userta web token ekk geanarate karanava mokada 
+  //jwt token ken thama ape user va identyfy karaganne
+  //token ekk naththma userta aii log venna venava mokda token eken thama ape site eka userva mathaka thiyagena
+  // inne 
 
     if(usersList.length > 0){
      const user = usersList[0]
@@ -240,6 +374,11 @@ export async function googleLogin(req,res){
       profilePic : user.profilePic
 
     }, process.env.SECRET_KEY)
+    console.log("db return email", user);
+
+    //ita passe eadala genarate unu token ekai userta adla visthra tikai api yavanava front end ekata
+    // The JWT token that was just generated. This token is used for subsequent authentication requests.
+// The user's data (first name, last name, email, etc.) to confirm the logged-in user’s details.
     res.json({
       message : " User logged in",
       token : token,
@@ -251,23 +390,34 @@ export async function googleLogin(req,res){
         email : user.email
       }
 
+
     })
+
+    console.log("user gioogle login token"+token);
+    console.log(user);
     }else{
       //create new user
     const newUserData = {
+      
+      // mevge dala   _ dala dala thiyenne g oogle eken ena userge data enne oyavge vbl e vaala   // .data.given_name
+      // api athana user kenek naththam, methanata acvilla
+      // object ekkak hadagannava e gle api eken userge  details valin 
+      // api ape user create db ekata e adla data tika savae karagena usrva ceate karagannava
+
+    
       email : email,
       firstName : response.data.given_name,
       lastName : response.data.family_name,
       type : "customer", 
       password : "#ggggg",
-      profilePic : response.data.profilePic
+      profilePic : response.data.picture
 
 }
 
 const user = new User(newUserData)
 user.save().then(()=>{
   res.json({
-    message : "User Created"
+    message : "User created"
   })
 
 
@@ -302,3 +452,164 @@ user.save().then(()=>{
 
  
 }
+
+
+
+
+// response eka click karama data goole eken adata json eka enne mehema 
+
+// Server is runnig port 5000
+// [nodemon] starting node index.js
+// Server is runnig port 5000
+// Server is runnig port 5000
+// database connetced
+// google endpoint res[object Object]
+// [nodemon] restarting due to changes...
+// [nodemon] restarting due to changes...
+// [nodemon] starting node index.js
+// Server is runnig port 5000
+// [nodemon] starting node index.js
+// Server is runnig port 5000
+// database connetced
+// database connetced
+// Google endpoint response: {
+//   sub: '103470880460796436729',
+//   name: 'dilantha nayanajith',
+//   given_name: 'dilantha',
+//   name: 'dilantha nayanajith',
+//   given_name: 'dilantha',
+//   given_name: 'dilantha',
+//   family_name: 'nayanajith',
+//   family_name: 'nayanajith',
+//   family_name: 'nayanajith',
+//   family_name: 'nayanajith',
+//   family_name: 'nayanajith',
+//   family_name: 'nayanajith',
+//   family_name: 'nayanajith',
+//   picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNyPBCWrKH1LrW7XJN1OoxgRhyVhyb_E5Ez9u3wQ6sxaDClj0=s96-c',
+//   email: 'dilantha9590@gmail.com',
+//   email_verified: true
+// }
+
+
+
+
+
+
+
+
+//   family_name: 'nayanajith',
+//   picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNyPBCWrKH1LrW7XJN1OoxgRhyVhyb_E5Ez9u3wQ6sxaDClj0=s96-c',
+//   email: 'dilantha9590@gmail.com',
+//   email_verified: true
+// }
+
+
+
+
+
+//   family_name: 'nayanajith',
+//   picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNyPBCWrKH1LrW7XJN1OoxgRhyVhyb_E5Ez9u3wQ6sxaDClj0=s96-c',
+//   email: 'dilantha9590@gmail.com',
+//   email_verified: true
+// }
+
+
+//   family_name: 'nayanajith',
+//   picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNyPBCWrKH1LrW7XJN1OoxgRhyVhyb_E5Ez9u3wQ6sxaDClj0=s96-c',
+//   email: 'dilantha9590@gmail.com',
+//   email_verified: true
+// }
+//   family_name: 'nayanajith',
+//   picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNyPBCWrKH1LrW7XJN1OoxgRhyVhyb_E5Ez9u3wQ6sxaDClj0=s96-c',
+//   family_name: 'nayanajith',
+//   picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNyPBCWrKH1LrW7XJN1OoxgRhyVhyb_E5Ez9u3wQ6sxaDClj0=s96-c',
+//   email: 'dilantha9590@gmail.com',
+//   email_verified: true
+// }
+
+
+
+// response eka click karama data goole eken adata json eka enne mehema 
+
+// Server is runnig port 5000
+// [nodemon] starting `node index.js`
+// Server is runnig port 5000
+// Server is runnig port 5000
+// database connetced
+// google endpoint res[object Object]
+// [nodemon] restarting due to changes...
+// [nodemon] restarting due to changes...
+// [nodemon] starting `node index.js`
+// Server is runnig port 5000
+// [nodemon] starting `node index.js`
+// Server is runnig port 5000
+// database connetced
+// database connetced
+// Google endpoint response: {
+//   sub: '103470880460796436729',
+//   name: 'dilantha nayanajith',
+//   given_name: 'dilantha',
+//   name: 'dilantha nayanajith',
+//   given_name: 'dilantha',
+//   given_name: 'dilantha',
+//   family_name: 'nayanajith',
+//   family_name: 'nayanajith',
+//   family_name: 'nayanajith',
+//   family_name: 'nayanajith',
+//   family_name: 'nayanajith',
+//   family_name: 'nayanajith',
+//   family_name: 'nayanajith',
+//   picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNyPBCWrKH1LrW7XJN1OoxgRhyVhyb_E5Ez9u3wQ6sxaDClj0=s96-c',
+//   email: 'dilantha9590@gmail.com',
+//   email_verified: true
+// }
+
+
+
+
+
+
+
+
+//   family_name: 'nayanajith',
+//   picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNyPBCWrKH1LrW7XJN1OoxgRhyVhyb_E5Ez9u3wQ6sxaDClj0=s96-c',
+//   email: 'dilantha9590@gmail.com',
+//   email_verified: true
+// }
+
+
+
+
+
+//   family_name: 'nayanajith',
+//   picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNyPBCWrKH1LrW7XJN1OoxgRhyVhyb_E5Ez9u3wQ6sxaDClj0=s96-c',
+//   email: 'dilantha9590@gmail.com',
+//   email_verified: true
+// }
+
+
+//   family_name: 'nayanajith',
+//   picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNyPBCWrKH1LrW7XJN1OoxgRhyVhyb_E5Ez9u3wQ6sxaDClj0=s96-c',
+//   email: 'dilantha9590@gmail.com',
+//   email_verified: true
+// }
+//   family_name: 'nayanajith',
+//   picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNyPBCWrKH1LrW7XJN1OoxgRhyVhyb_E5Ez9u3wQ6sxaDClj0=s96-c',
+//   family_name: 'nayanajith',
+//   picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNyPBCWrKH1LrW7XJN1OoxgRhyVhyb_E5Ez9u3wQ6sxaDClj0=s96-c',
+//   email: 'dilantha9590@gmail.com',
+//   email_verified: true
+// }
+
+
+
+
+
+
+
+
+
+
+
+
