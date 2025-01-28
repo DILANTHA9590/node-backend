@@ -105,7 +105,7 @@ app.use("/api/students", studentRouter);
 app.use("/api/users", userRouter);
 
 app.use("/api/products",productRouter);
-app.use("/api/Orders",orderRouter);
+app.use("/api/orders",orderRouter);
 
 app.post("/", (req, res) => {
   console.log(req.body);
