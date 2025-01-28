@@ -364,7 +364,7 @@ console.log(req.body)
         
     
 //update notes and status
-    export async function  updateOrder(){
+    export async function  updateOrder(req,res){
         if(!isadmin){
             return res.status(401).json({
                 message : "Please login as admin to update order "
