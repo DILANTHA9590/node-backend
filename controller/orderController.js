@@ -274,21 +274,21 @@ export async function getOrderList(req,res){
         if(isCustomer){
             //methandi api cusmer avoth eyage order tika pennava order eke eyage e mail ekata adalava
     
-            const orders =  Order.find({email:req.user.email})
+            const orders = await Order.find({email:req.user.email})
     
-            res.json(orders);
+            res.status(200).json(orders);
             return;
     
         }
     
         else if(isadmin(req)){
             const orders = await Order.find({});
-            res.json(orders);
+            res.status(200).json(orders);
         }
     
     
         else{
-            res.json({
+            res.status(401).json({
                 message : "Please Login to view Order"
     
             })
@@ -361,4 +361,50 @@ console.log(req.body)
 
         }
     }
+        
+    
+//update notes and status
+    export async function  updateOrder(){
+        if(!isadmin){
+            return res.status(401).json({
+                message : "Please login as admin to update order "
+            })
+        }
+
+        try {
+            const orderId = req.params.orderId;
+            const order = await Order.findOne({
+                orderId : orderId
+            });
+
+            if (order == null){
+             return   res.status(404).json({
+                    message:"Order Not Found"
+                })
+            }
+
+            const notes = req.body.notes;
+            const status = req.body.status;
+
+
+            const updateOrder = await Order.findOneAndUpdate(
+                {orderId:orderId},
+                {notes:notes, status:status}
+
+            );
+
+            res.status(200).json({
+                message : "Order updated"
+            })
+    
+        } catch (error) {
+
+            res.status(500).json({
+                message : error.message
+            })
+
+          
             
+        }
+
+    }
