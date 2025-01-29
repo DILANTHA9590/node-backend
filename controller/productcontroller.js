@@ -198,7 +198,7 @@ export async function searchProduct(req,res){
   //api methanadi parameter valin pass vena search vennaoni de ganna oni
   // eya type karala thiuyenne mkona vage namakda/
   //kiyala query ekata thapa pass vela enne
-  const query = req.param.quary
+  const query = req.params.query
 
   try {
 
@@ -206,16 +206,32 @@ export async function searchProduct(req,res){
 // api  methana regex use karala thiyenne regex valin api karanne saralavama swtring ekkata string ekak smanda balana eka methan a nam 
 //tha vidihatakata kiuvoth foramt ekkata thiyeda kiyala//eg vachana thiye formate ekka me vachanethiyeda kiyala 
 // balanna thama me regex one meka loku padamak 
-  const products = await Product.find({name :{$regex :"/"
-    +query+"/", $options : "i"
+//ethakota methanadi ena query eka ape db eke prduct name ekata samanda kiyala balanava
+
+// api  dan haduve product naeme eken gannavithrane dan api or dala kiyanava alt names valinuth gannakiyala
+// or dapuvama apita kihimayak denna puluavamn ita passe api alt names valinuth hambunoth adala vachane ekenuth api agannava
+//or dapuvama apta kihimayakma mehema check akraganna puluvan
+
+  // const products = await Product.find({productName : {$regex :
+  //   query, $options : "i"
+ //me deken ekk hari giyoth eka apata denava
+//  api mokk hri vachana kallak gahovoth names valata har altnames valata hari samana eka return karanava
+  const products = await Product.find({
+    $or: [
+      { productName: { $regex: query, $options: "i" } },
+      { altNames: { $elemMatch: { $regex: query, $options: "i" } } }
+    ]
+  });
+  
+
+    // me query eke ena vachana kalla product eke kohe hari thibboth ekia  ganna kiyala
 // api  ala iriddeka gahuve wakye onima thanaka thiyenam eka galappala denna kioyala
-// etha  kota api dena name eka thiyena onima thanak avada karanava
+// etha  kota api dena name eka thiyena onima thanak avada karanava eka api ain akra eka eya automa danava
 
-  }})
 
-  res.status(200).json({
+  res.status(200).json(
     products
-  })
+  )
     
   } catch (error) {
 
