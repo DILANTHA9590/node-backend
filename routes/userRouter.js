@@ -1,19 +1,21 @@
 import express from "express";
 import {
   userCreation,
-  getuser,
+ 
   loginUser,
   googleLogin,
+  getUser,
 } from "../controller/userController.js";
 
 const userRouter = express.Router();
 
 userRouter.post("/", userCreation);
 
-userRouter.get("/", getuser);
+userRouter.get("/", getUser);
 
 userRouter.post("/login", loginUser);
 userRouter.post("/google", googleLogin);
+
 
 
 export default userRouter;
