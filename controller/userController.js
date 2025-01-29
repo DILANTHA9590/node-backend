@@ -171,20 +171,37 @@ export function  isCustomer(req){
 }
 
 //get databse have all user details
-export function getuser(req, res) {
-  User.find().then((usersList) => {
-    res.json({
-      ulist: usersList,
-    });
-  });
+// export function getuser(req, res) {
+//   User.find().then((usersList) => {
+//     res.json({
+//       ulist: usersList,
+//     });
+//   });
+// }
+
+
+export async function getUser(req,res){
+
+
+if(req.user==null){
+  res.status(404).json({
+    message : "Please login to view user details"
+  })
+
+  return
+}
+// null naththam api eka yavanava front enad ekata
+//api meka methana mehema haduve apata front end eke di meka decode karaganna ba mokada apata frontt end ekedi thiyenne token 
+// //ekk vitharai apata eka balaganna ba admin kenektada user kenektad a kiyala balagannma ba
+//e hinda aparta me userge information tia agannma venama api ekak hadanavas user token ekk dunnoth eyata puluavan methanin 
+// e tika  read karala ganna
+res.json(req.user);
+
+
 }
 
 
-export function createnewstudent(){
 
-
-
-}
 
 
 // export async function googleLogin(req,res){
