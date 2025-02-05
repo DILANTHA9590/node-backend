@@ -204,6 +204,121 @@ res.json(req.user);
 
 
 
+export async function getUserData(req,res){
+
+
+  console.log("getuser req",req.user);
+
+  if(req.user==null){
+    res.json({
+      message: " Please login to view users data"
+      
+    })
+
+    return;
+  }
+
+  try {
+
+
+    if(isadmin(req)){
+      const users = await User.find({})
+  
+     return res.status(200).json({
+        users
+      })
+
+    }
+  
+  
+    
+  
+    
+  } catch (error) {
+
+    res.json({
+      error
+    })
+    
+  }
+
+
+ 
+    
+
+  
+
+
+
+  
+
+
+
+}
+
+
+
+export async function updateUser(req, res){//kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+
+
+  
+
+  const email= req.params.email;
+
+  const userData = req.body
+    
+
+  userData.password = bcrypt.hashSync(userData.password, 10);
+  console.log(req.body.profilePic);
+
+
+  user.find({})
+
+
+
+
+
+
+  try {
+
+    
+  
+  
+    await User.updateOne(
+      {email:email},
+    userData
+
+    )
+    res.status(200).json({
+      message : " User Update succsessFull"
+    })
+  
+  
+    
+  
+    
+  } catch (error) {
+    res.json({
+      message: "Fail to update user"
+    })
+    
+    
+  }
+
+ 
+
+
+
+  
+
+}
+
+
+
+
+
+
+
 // export async function googleLogin(req,res){
 
   
