@@ -64,12 +64,15 @@ export async function createNewProduct(req, res) {
  
   export  async function getProduct(req,res){
 
+    console.log("ssssssssssssssssssssss",req.user);
+
 try {
 
   const productlist = await  Product.find({})//productList is an array because Product.find() 
   // in Mongoose returns an array of documents (even if it contains zero or one document). Here's how it works:
   res.json({
     list : productlist 
+    
   })
   
   
