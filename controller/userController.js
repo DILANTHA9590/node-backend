@@ -258,52 +258,127 @@ export async function getUserData(req,res){
 
 
 
-export async function updateUser(req, res){//kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+// export async function updateUser(req, res){//kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 
+// try {
+
+
+//   const email= req.params.email;
+
+//   const userData = req.body
+
+//   const user= await User.find({email});
+//   if(!user){
+//     res.status(404).json({
+//       message: "User Not Found "
+//     })
+//   }
+
+//   const HashPassword = user.password
+//   if(password !==user.password){
+//     const saltRounds = 10;
+//     HashPassword = await bcrypt.hash(password, saltRounds);
+//   }
+
+
+//   const updateUser = await User.updateOne(
+//       {email:email},
+//     userData
+
+//     )
+//     res.status(200).json({
+//       message : " User Update succsessFull"
+//     }
+   
+//   )
+  
+// } catch (error) {
+
+//   res.json({
+//     message : " User Update Unsuccesfully"
+//   })
 
   
+ 
+  
+// }
+  
 
-  const email= req.params.email;
-
-  const userData = req.body
-    
-
-  userData.password = bcrypt.hashSync(userData.password, 10);
-  console.log(req.body.profilePic);
-
-
-  user.find({})
+  
+// }
 
 
 
-
-
-
+export async function updateUser(req, res) {
   try {
+    const email = req.params.email;
+    const userData = req.body;
 
-    
-  
-  
-    await User.updateOne(
-      {email:email},
-    userData
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User Not Found" });
+    }
 
-    )
-    res.status(200).json({
-      message : " User Update succsessFull"
-    })
-  
-  
-    
-  
-    
+    // Check if the password is different and hash it if it is
+    if (userData.password && userData.password !== user.password) {
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(userData.password, saltRounds);
+      userData.password = hashedPassword; // Replace plain password with hashed one
+    }
+
+    // Update user data in the database
+    await User.updateOne({ email: email }, userData);
+
+    res.status(200).json({ message: "User updated successfully" });
+
   } catch (error) {
-    res.json({
-      message: "Fail to update user"
-    })
-    
-    
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "User update failed" });
   }
+}
+
+
+
+
+
+    
+
+//   userData.password = bcrypt.hashSync(userData.password, 10);
+//   console.log(req.body.profilePic);
+
+
+//   user.find({})
+
+
+
+
+
+
+//   try {
+
+    
+  
+  
+//     await User.updateOne(
+//       {email:email},
+//     userData
+
+//     )
+//     res.status(200).json({
+//       message : " User Update succsessFull"
+//     })
+  
+  
+    
+  
+    
+//   } catch (error) {
+//     res.json({
+//       message: "Fail to update user"
+//     })
+    
+    
+//   }
 
  
 
@@ -311,7 +386,7 @@ export async function updateUser(req, res){//kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 
   
 
-}
+// }
 
 
 
