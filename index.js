@@ -65,7 +65,8 @@ app.use((req, res, next) => {
         //METGHANDI UDA EROORR EKK AVE NATHHTAM decode karagaththa eka methanadinbalaganna puluvan
         // console.log(decoded); apita dan product eketh me deitails balaganna puluvan
 
-        req.user = decoded; // itapasse api decode karapu user va request ekata ellaganava  , e kiaynne e decode karana eka reqest eke userge data kiyala meyava ellaganava
+        req.user = decoded;
+       // itapasse api decode karapu user va request ekata ellaganava  , e kiaynne e decode karana eka reqest eke userge data kiyala meyava ellaganava
         //thavath videhakata kiuvoth request ekatama decode details ellananna
         //  decode vela
       }
