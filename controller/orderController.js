@@ -262,6 +262,7 @@ export async function createOrder(req,res){
 // okkogema  order tika pennai hdaganna puluavan
 export async function getOrderList(req,res){
 
+
   
 
     try {
@@ -271,10 +272,12 @@ export async function getOrderList(req,res){
         // })
 
 
-        if(isCustomer){
+        if(isCustomer(req)){
             //methandi api cusmer avoth eyage order tika pennava order eke eyage e mail ekata adalava
+            console.log(req.user);
     
             const orders = await Order.find({email:req.user.email})
+            
     
             res.status(200).json(orders);
             return;
