@@ -7,6 +7,7 @@ import {
   getUser,
   getUserData,
   updateUser,
+  updateUserStatus,
 } from "../controller/userController.js";
 
 const userRouter = express.Router();
@@ -21,6 +22,10 @@ userRouter.post("/login", loginUser);
 userRouter.post("/google", googleLogin);
 
 userRouter.put("/:email",updateUser);
+userRouter.put("/:id",updateUser);
+
+
+userRouter.put("/updateStatus/:userId", updateUserStatus);
 
 
 
