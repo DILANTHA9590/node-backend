@@ -310,9 +310,13 @@ export async function getUserData(req,res){
 
 
 export async function updateUser(req, res) {
-  try {
-    const email = req.params.email;
+  console.log(req);
+
+  const email = req.params.email;
     const userData = req.body;
+  try {
+    if(req.user=='customer'){
+    
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -331,11 +335,85 @@ export async function updateUser(req, res) {
 
     res.status(200).json({ message: "User updated successfully" });
 
+  }
+
+  else{
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User Not Found" });
+    }
+
+  }
+
   } catch (error) {
     console.error("Error updating user:", error);
     res.status(500).json({ message: "User update failed" });
   }
 }
+
+
+
+// export async function updateUserStatus(req, res) {
+//   try {
+//     const userId = req.params.userId; // Get user ID from URL
+//     const { isBlock } = req.body; // Get block status from request body
+
+//     // Find user and update block status
+//     const updatedUser = await User.findByIdAndUpdate(
+//       userId,
+//       { isBlock: isBlock }, // Update block status
+//       { new: true } // Return updated document
+//     );
+
+//     if (!updatedUser) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     res.status(200).json({
+//       message: `User ${isBlock ? "Blocked" : "Unblocked"} successfully`,
+//       user: updatedUser,
+//     });
+//   } catch (error) {
+//     console.error("Error updating user status:", error);
+//     res.status(500).json({ message: "Error updating user status", error: error.message });
+//   }
+// }
+
+export async function updateUserStatus(req, res) {
+  try {
+    const userId = req.params.userId; // Get user ID from URL
+    const { isBlock } = req.body; // Get block status from request body
+    console.log(req.body);
+
+    // Find user by ID and update the block status
+    const user = await User.findOne({ _id: userId }); // Find the user with the given userId
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update the user's block status manually
+    user.isBlock = isBlock;
+
+    // Save the updated user
+    await user.save();
+
+    res.status(200).json({
+      message: `User ${isBlock ? "Blocked" : "Unblocked"} successfully`,
+      user: user,
+    });
+  } catch (error) {
+    console.error("Error updating user status:", error);
+    res.status(500).json({ message: "Error updating user status", error: error.message });
+  }
+}
+
+
+
+
+// Update user block status
+
 
 
 
@@ -659,6 +737,8 @@ user.save().then(()=>{
 
  
 }
+
+
 
 
 
