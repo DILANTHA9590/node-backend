@@ -84,6 +84,13 @@ const orderSchema = mongoose.Schema({
     phone : {
         type : String,
         required :true
+    },
+
+
+
+    reviews : {
+        type : String,
+        default : "add to reviews"
     }
 
 
