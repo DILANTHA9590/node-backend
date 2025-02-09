@@ -9,6 +9,7 @@ import Product from "../modules/product.js";
 
 export async function createOrder(req,res){
 
+
     if(!isCustomer){
          return res.status(401).json({
             message : "Please login as administrator to create order"
@@ -141,6 +142,7 @@ export async function createOrder(req,res){
 
 
             newproductArrey[i] = {
+                 productId : product.productId,
                 name: product.productName,
                 price : product.lastPrice,
                 quantity : newOrderData.orderedItems[i].qty,
@@ -170,7 +172,7 @@ export async function createOrder(req,res){
 
         
 
-        console.log(newproductArrey);
+
 
         newOrderData.orderedItems = newproductArrey
 
