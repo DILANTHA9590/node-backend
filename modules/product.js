@@ -54,6 +54,11 @@ const productSchema = mongoose.Schema({
         require : true
     },
 
+    reviews : [
+        {
+        type :String
+        }
+    ]
 
 
 })
