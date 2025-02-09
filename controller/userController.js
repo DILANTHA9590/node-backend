@@ -90,6 +90,16 @@ export function loginUser(req, res) {
         });
       } else {
         const user = users[0]; // e user innvbanam eyava user me user veriable kata dagannava
+        // if(user.isBlock){
+          
+        //   res.json({
+        //     message : "block user"
+            
+        //   })
+
+        //   return
+
+        // }
         const isPasswordCorrect = bcrypt.compareSync(
           req.body.password,
           user.password
