@@ -167,29 +167,22 @@ export async function updateProduct(req,res){
 
 
 //meka api token admin baklanne ana meka product ekata adala data tika ganna product overwiev ekata haduve
-export async function getProductById(req,res){
-
-
+export async function getProductById(req, res) {
   try {
-    const productId =  req.params.productId
-  
-  const product = await Product.findOne({productId:productId})
+    const productId = req.params.productId; // Get ID from request params
+    console.log(productId);
 
-  res.status(200).json({
-    product
-  })
+    // Find product by `_id` instead of `productId`
+    const product = await Product.findOne({ productId: productId });
 
+    console.log(product);
 
+    res.status(200).json({ product });
   } catch (error) {
-    res.status(500).json({
-      message : "hjlkjkl"
-    })
-    
+    res.status(500).json({ message: "Something went wrong", error });
   }
-
-  
-
 }
+
 
 
 // api  metha na hadagannava search vena fucntion ekk podi vachana kallak avata passe search vena function ekk
@@ -251,6 +244,68 @@ export async function searchProduct(req,res){
 }
 
 
+
+export async function updateReviwes(req,res){
+  console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
+
+  const id = req.params.itemId
+  const reviews = req.body.reviwes
+
+  console.log(id);
+  console.log(reviews);
+
+  try {
+
+
+    const product = await Product.findOne({ productId: id });
+    console.log("getproduct",product);
+
+
+  console.log("llllllllllllllllllllll");
+
+   product.reviews.push(reviews);
+   console.log("sss",product);
+
+
+
+   product.save();
+
+
+
+  res.json({
+    message : "Reviews upadated"
+  })
+
+
+
+ 
+    
+  } catch (error) {
+
+
+
+    res.json({
+      message : " erorr have"
+    })
+
+
+    
+  }
+
+
+  
+ 
+
+
+
+
+ 
+
+
+
+  
+
+}
 
 
 
