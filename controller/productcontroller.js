@@ -64,7 +64,7 @@ export async function createNewProduct(req, res) {
  
   export  async function getProduct(req,res){
 
-    console.log("ssssssssssssssssssssss",req.user);
+  
 
 try {
 
@@ -246,7 +246,6 @@ export async function searchProduct(req,res){
 
 
 export async function updateReviwes(req,res){
-  console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
 
   const id = req.params.itemId
   const reviews = req.body.reviwes
@@ -261,10 +260,9 @@ export async function updateReviwes(req,res){
     console.log("getproduct",product);
 
 
-  console.log("llllllllllllllllllllll");
 
    product.reviews.push(reviews);
-   console.log("sss",product);
+
 
 
 
@@ -285,7 +283,7 @@ export async function updateReviwes(req,res){
 
 
     res.json({
-      message : " erorr have"
+      message : error
     })
 
 
