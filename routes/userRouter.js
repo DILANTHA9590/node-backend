@@ -22,7 +22,7 @@ userRouter.post("/login", loginUser);
 userRouter.post("/google", googleLogin);
 
 userRouter.put("/:email",updateUser);
-userRouter.put("/:id",updateUser);
+// userRouter.put("/:id",updateUser);
 
 
 userRouter.put("/updateStatus/:userId", updateUserStatus);
