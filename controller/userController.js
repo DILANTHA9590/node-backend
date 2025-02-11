@@ -10,6 +10,10 @@ import axios from "axios";
 
 dotenv.config();
 
+
+
+
+
 /// create user
 export function userCreation(req, res) {
   //API TA DAN ONI user ge email password hash karala secure karaganna
@@ -24,11 +28,12 @@ export function userCreation(req, res) {
 // meka api passe dagaththe 
   if(getUserNewData.type !== "admin"){ //api methandi balana admin account ekk acreate karannada  hadanne kiyala ethakota  get new eke type eka
     //adminta samanan api balanava 
-
+if(req.data !=null){
     if(req.user==null){//request eke nullda kiyala methandi ape token eka decode karala details enava login vela naththam methanata data enne na\
 
+
       console.log(req.user);
-      res.json({
+      res.status(403).json({
         
         
         message : "please login as administrator to create admin account " // nul nam api  kiyanava login vela enna kiyala admin  account eken
@@ -40,13 +45,18 @@ export function userCreation(req, res) {
 
     if(req.user.type != "admin"){//methanadi api decode karala evana token eke type eka admin da kiyala balanava admin nemenam
 
-       res.json({
+       res.status(403).json({
         message : "please login as administrator to create admin account " // nul nam api  kiyanava login vela enna kiyala admin  account eken
       })
       return
 
     }
   }
+}
+
+
+
+
 
    
 
@@ -66,13 +76,13 @@ export function userCreation(req, res) {
   user
     .save()
     .then(() => {
-      res.json({
+      res.status(200).json({
         message: "User created Successfully",
       });
     })
     .catch((erorr) => {
       console.log(erorr);
-      res.json({
+      res.status(400).json({
         message: "all ready  use this mail",
       });
     });
@@ -320,20 +330,29 @@ export async function getUserData(req,res){
 
 
 export async function updateUser(req, res) {
-  console.log(req);
+  console.log(req.user);
+  console.log(req.body);
 
   const email = req.params.email;
     const userData = req.body;
+    console.log("userrrrrrrrrrrrrrrrrrr",userData)
   try {
-    if(req.user=='customer'){
+    if(req.user.type=='customer'){
     
 
     const user = await User.findOne({ email });
+
+    console.log("find user",user);
     if (!user) {
+
+      console.log("user not found")
       return res.status(404).json({ message: "User Not Found" });
+
+  
     }
 
     // Check if the password is different and hash it if it is
+
     if (userData.password && userData.password !== user.password) {
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(userData.password, saltRounds);
@@ -352,6 +371,13 @@ export async function updateUser(req, res) {
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User Not Found" });
+    }
+
+
+    else{
+      res.status(400).json({
+        message : " please login first"
+      })
     }
 
   }
