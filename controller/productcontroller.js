@@ -309,6 +309,34 @@ export async function updateReviwes(req,res){
 
 
 
+
+export async function productCount(req, res) {
+
+  try {
+    let products = await Product.find(); 
+
+    products = products.length
+    console.log(products);
+    
+
+    res.status(200).json({
+
+      products
+
+
+  
+    })
+   
+   
+  } catch (error) {
+
+    res.json({
+      message : error
+    })
+    
+  }
+}
+
  
    
 
