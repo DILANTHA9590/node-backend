@@ -325,6 +325,12 @@ console.log(req.body)
             const product = await Product.findOne({
                 productId: newOrderData.orderedItems[i].productId,
             });
+
+
+            if (!product) {
+                console.error(`Error: Product not found for ID ${newOrderData.orderedItems[i].productId}`);
+                continue; // Skip this product and move to the next
+            }
     
           
 // meka eka rumak avata passe last price ekai label price ekai ekata ekathuvenava dan thiyena agatayata ekathukaranava
@@ -360,12 +366,14 @@ console.log(req.body)
             });
         
         }catch(error){
+            console.log(error);
             res.json({
                 message : error.message
             });
 
         }
     }
+        
         
     
 //update notes and status
@@ -411,5 +419,20 @@ console.log(req.body)
           
             
         }
+
+    }
+
+
+    export async function  orderCount(req,res){
+
+        let ordercount = await Order.find();
+
+      ordercount =ordercount.length
+
+        res.json({
+
+            ordercount
+        })
+
 
     }
