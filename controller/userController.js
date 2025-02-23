@@ -774,6 +774,100 @@ user.save().then(()=>{
  
 }
 
+export async function usersCount(req,res){
+
+  try {
+  let customerCount=[];
+  let adminCount = [];
+    let  users = await User.find();
+    for(let i=0; i<users.length; i++){
+      if(users[i].type!=="admin" ){
+        customerCount[i] =users[i]
+  
+      }
+      else{
+        adminCount[i] =users[i];
+
+      }
+    }
+  
+
+    customerCount= customerCount.filter(item => item !== null && item !== undefined);
+
+    
+   customerCount=customerCount.length
+
+
+
+
+
+    adminCount = adminCount.filter(item => item !== null && item !== undefined);
+    
+
+    adminCount=adminCount.length
+
+
+    res.json({
+      customerCount,
+      adminCount
+    })
+
+  
+  } catch (error) {
+    
+  }
+  
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  }
+  
+  
+  export async function deleteUser(req,res){
+
+    console.log("inside delete users");
+  
+    if(!isadmin){
+    res.status(400).json({
+      message : " Please login to admin account"
+      
+      
+    })
+  
+    return
+  
+    }
+  
+    try {
+  
+      const user = req.params._id
+      console.log(user);
+
+
+
+      await User.deleteOne({_id : req.params._id});
+
+      res.status(200).json({
+        message : "Deleted Succesfully"
+      })
+
+    
+
+      
+      
+    } catch (error) {
+      
+    }
+  
+  }
+  
+
 
 
 
