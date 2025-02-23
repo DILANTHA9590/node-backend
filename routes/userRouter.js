@@ -8,6 +8,8 @@ import {
   getUserData,
   updateUser,
   updateUserStatus,
+  usersCount,
+  deleteUser,
 } from "../controller/userController.js";
 
 const userRouter = express.Router();
@@ -27,6 +29,8 @@ userRouter.put("/:email",updateUser);
 
 userRouter.put("/updateStatus/:userId", updateUserStatus);
 
+userRouter.get("/usercount" ,usersCount);
+userRouter.delete("/:_id",deleteUser);
 
 
 export default userRouter;
