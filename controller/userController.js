@@ -622,158 +622,81 @@ export async function updateUserStatus(req, res) {
 
 //api meka saralava vada karana hati therum ganna balamu advanced karanna kalin api hithamu dan meka enne ape req eke body
 //  eka kiyala ehema avoth api  eka gnnava token vble ekkeata mehema
-export async function googleLogin(req,res){
-
-  //dan apita siida venava userge visthara tika token ekata adla va danaganna
-    //mekata apata googla api api url ekata apita siida venav get ekk gahal details ganna
-    // apta mulinm a front end ekedi thama api calll gahanna oni axios dan apata backend eke idalath 
-    // dan  apata axios oni venava mokda dan apita backe nd eken googl e api ekkata
-    // api ekk gahala google token eka dta tika ganna oni e nisa apita back ekakath axios install 
-    //kraganna oni venava
-  
-  const token = req.body.token 
-  console.log("mytoken",token);
-
-  try {
-    const response = await axios.get(
-      'https://www.googleapis.com/oauth2/v3/userinfo',{
-        //api front end eken back ekata headr eka athule token eka euva vgema api 
-        //MEKETH TOKEN EKA YAVANA E VGEMA GOOGLE API END POINT EKATA YAVALA ENA RES TIKA
-        // RESPONSE  V BLE EKAT GANNAV 
-        headers : {
-          Authorization :` Bearer ${token}`
-        }
-
-    })
-
-    // apita  dan mehema evala hariyanne na google api eken apva data verify karaganna oni
-    // console.log("Google endpoint response:", response.data); meken apata json data ballana puluvan
-    // apata  ape token eka yavuvma google end point keta eyala methanata api datta
-    // ena ahti mama yatin  ma dala athi
-    //denava apata e token ekata adla user ge all details tika response eke
-
-    // res.json({
-    //   message:"Google login successful",
-    
-    // api  res eke email eke ena email ek a vble ekkata degena eka balanava db eke mail ekai samanda kiyala kiyala
-    console.log("Google endpoint response:", response.data); 
-    const email = response.data.email
-
-    //check if user exist
-    // api  ilagat balanava user log venna hdana email ekai db mail ekai samanda kiyala
-
-    //   user : response.data // ita passe uda response v ble eke ena data tika api balana res eeke ena data
-    // vala user kenek  innvda kiyala
-    //saralavama kiuvoth ekaparak hari eya google eken log vela naththam api e google apiekata token eka yavala 
-    // ena user ge details api db eke save vena vidihata hadaganna yanne
-    //ethakota devani para eya log venakota e email eka ape db eke save vela nisa  eya log una user kenek ekai methanin ppahala karanna yanne ekata
-    // api dam methanin iiiselama check akrala balanava user genamin mail ekk denata math mail eke thiyenavad  kiyala
-
-    // })
-
-    const usersList = await User.find({email:email})
-
-   // iota passe api balanava eken ena email ekata adala ena userlist arrey eka eka userkenek hari innavda kiyala
-   //emtyda kiyala vge thama balanna ehema innavanam e user object arrey eke 0 veni ekkenav a gannava
-   //kojhomath methanata ekkani thamai enne
-
-  //  iinavanam  api index eke jwt webtoken  ekk hadagaththa vge
-
-  //ita passe e adala userta web token ekk geanarate karanava mokada 
-  //jwt token ken thama ape user va identyfy karaganne
-  //token ekk naththma userta aii log venna venava mokda token eken thama ape site eka userva mathaka thiyagena
-  // inne 
-
-    if(usersList.length > 0){
-     const user = usersList[0]
-     const token = jwt.sign({
-      email : user.email,
-      firstName :user.firstName,
-      lastName : user.lastName,
-      isBlock : user.isBlock,
-      type :user.type,
-      profilePic : user.profilePic
-
-    }, process.env.SECRET_KEY)
-    console.log("db return email", user);
-
-    //ita passe eadala genarate unu token ekai userta adla visthra tikai api yavanava front end ekata
-    // The JWT token that was just generated. This token is used for subsequent authentication requests.
-// The user's data (first name, last name, email, etc.) to confirm the logged-in user’s details.
-    res.json({
-      message : " User logged in",
-      token : token,
-      user : {
-        firstName :user.firstName,
-        lastName : user.lastName,
-        type : user.type,
-        profilePic : user.profilePic,
-        email : user.email
-      }
-
-
-    })
-
-    console.log("user gioogle login token"+token);
-    console.log(user);
-    }else{
-      //create new user
-    const newUserData = {
-      
-      // mevge dala   _ dala dala thiyenne g oogle eken ena userge data enne oyavge vbl e vaala   // .data.given_name
-      // api athana user kenek naththam, methanata acvilla
-      // object ekkak hadagannava e gle api eken userge  details valin 
-      // api ape user create db ekata e adla data tika savae karagena usrva ceate karagannava
-
-    
-      email : email,
-      firstName : response.data.given_name,
-      lastName : response.data.family_name,
-      type : "customer", 
-      password : "#ggggg",
-      profilePic : response.data.picture
-
-}
-
-const user = new User(newUserData)
-user.save().then(()=>{
-  res.json({
-    message : "User created"
-  })
-
-
-}).catch((error)=>{
-
-  res.json({
-    message : "User not created"
-  })
- 
-
-})
-
-
-
-    }
-
-
-
-
-
-
-    
-  } catch (error) {
-    console.log(error);
-
-    res.json({
-      message : "Google login failed"
-      
-    })
-    
+export async function googleLogin(req, res) {
+  if (!req.body.token) {
+    return res.status(400).json({ message: "Token is required" });
   }
 
- 
-}
+  const token = req.body.token;
+  console.log("Received Token:", token);
 
+  try {
+    // Fetch user details from Google
+    const googleResponse = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    console.log("Google API Response:", googleResponse.data);
+
+    const email = googleResponse.data.email;
+
+    // Check if user already exists
+    const usersList = await User.find({ email: email });
+    console.log("User lookup result:", usersList);
+
+    if (usersList.length > 0) {
+      const user = usersList[0];
+
+      const userToken = jwt.sign(
+        {
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          isBlock: user.isBlock,
+          type: user.type,
+          profilePic: user.profilePic,
+        },
+        process.env.SECRET_KEY,
+        { expiresIn: "7d" }
+      );
+
+      console.log("User logged in with token:", userToken);
+
+      return res.json({
+        message: "User logged in",
+        token: userToken,
+        user: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          type: user.type,
+          profilePic: user.profilePic,
+          email: user.email,
+        }
+      });
+    }
+
+    // Create a new user if not found
+    const newUserData = {
+      email: email,
+      firstName: googleResponse.data.given_name,
+      lastName: googleResponse.data.family_name,
+      type: "customer",
+      password: "#ggggg",
+      profilePic: googleResponse.data.picture,
+    };
+
+    const newUser = new User(newUserData);
+    await newUser.save();
+
+    console.log("New user created:", newUser);
+
+    return res.json({ message: "User created successfully" });
+
+  } catch (error) {
+    console.error("Google login error:", error);
+    return res.status(500).json({ message: "Google login failed" });
+  }
+}
 export async function usersCount(req,res){
 
   try {
