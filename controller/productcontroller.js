@@ -13,20 +13,7 @@ export async function createNewProduct(req, res) {
     }
 
 
-  
-    //apiata product id eka balala hadanna avshaya na mokada komoath id eka promary key eka ape 
-    //api aye ekk add karath eka kohomath yanne catch block ekata habay yanne 200 e kiyanne ok 
-    //api e nisa manuaklly vensa karanna oni 403 500 vge status eror4 vlata ethakota hari
-    //nathtam front end eke try eka athulata thama meka yanne cartch ekata gihin erooor eka ahuvenne na
-    //ethakota 200 neme yanne enisa apata message eka ganna puluvan
-    // // Check if the product already exists
-    // const productexist = await Product.findOne({ productId: req.body.productId });
-
-    // if (productexist) {
-    //   return res.json({
-    //     message: "This product already exists",
-    //   });
-    // }
+ 
 
     // Create and save the new product
     const newProduct = new Product(req.body);
@@ -39,19 +26,7 @@ export async function createNewProduct(req, res) {
   } catch (error) {
   
 
-    // Catch and handle errors
-
-    //apiata product id eka balala hadanna avshaya na mokada komoath id eka promary key eka ape 
-    //api aye ekk add karath eka kohomath yanne catch block ekata habay yanne 200 e kiyanne ok 
-    //api e nisa manuaklly vensa karanna oni 403 500 vge status eror4 vlata ethakota hari
-    //nathtam front end eke try eka athulata thama meka yanne cartch ekata gihin erooor eka ahuvenne na
-    //venne methgana status eka dala nathinisa meka kelinnama yavana front end eke try caTCH EKTH TRY EKATA
-    ///API status eka dala thibbama eka 200 anthuva 403 erorr ekk vidihatra yanava eka allaganava front end catch eken
-
-    // evagema loku loku project  if if if condtion dala  me vge error  ekk avoth api e ena error eka pilibadava
-    //sampuranava vistharayk ho 
-    //e eorr eka pilibadava status code eka  front end eka5ta yavana eka
-    //ehema karanavanam eka mara quality
+    
     res.status(403).json({
       message: "This product already exists "+error
  
@@ -68,8 +43,7 @@ export async function createNewProduct(req, res) {
 
 try {
 
-  const productlist = await  Product.find({})//productList is an array because Product.find() 
-  // in Mongoose returns an array of documents (even if it contains zero or one document). Here's how it works:
+  const productlist = await  Product.find({})
   res.json({
     list : productlist 
     
@@ -166,7 +140,7 @@ export async function updateProduct(req,res){
 
 
 
-//meka api token admin baklanne ana meka product ekata adala data tika ganna product overwiev ekata haduve
+
 export async function getProductById(req, res) {
   try {
     const productId = req.params.productId; // Get ID from request params
@@ -185,33 +159,19 @@ export async function getProductById(req, res) {
 
 
 
-// api  metha na hadagannava search vena fucntion ekk podi vachana kallak avata passe search vena function ekk
+
 
 
 
 export async function searchProduct(req,res){
 
-  //api methanadi parameter valin pass vena search vennaoni de ganna oni
-  // eya type karala thiuyenne mkona vage namakda/
-  //kiyala query ekata thapa pass vela enne
+  
   const query = req.params.query
 
   try {
 
     
-// api  methana regex use karala thiyenne regex valin api karanne saralavama swtring ekkata string ekak smanda balana eka methan a nam 
-//tha vidihatakata kiuvoth foramt ekkata thiyeda kiyala//eg vachana thiye formate ekka me vachanethiyeda kiyala 
-// balanna thama me regex one meka loku padamak 
-//ethakota methanadi ena query eka ape db eke prduct name ekata samanda kiyala balanava
 
-// api  dan haduve product naeme eken gannavithrane dan api or dala kiyanava alt names valinuth gannakiyala
-// or dapuvama apita kihimayak denna puluavamn ita passe api alt names valinuth hambunoth adala vachane ekenuth api agannava
-//or dapuvama apta kihimayakma mehema check akraganna puluvan
-
-  // const products = await Product.find({productName : {$regex :
-  //   query, $options : "i"
- //me deken ekk hari giyoth eka apata denava
-//  api mokk hri vachana kallak gahovoth names valata har altnames valata hari samana eka return karanava
   const products = await Product.find({
     $or: [
       { productName: { $regex: query, $options: "i" } },
@@ -220,10 +180,7 @@ export async function searchProduct(req,res){
   });
   
 
-    // me query eke ena vachana kalla product eke kohe hari thibboth ekia  ganna kiyala
-// api  ala iriddeka gahuve wakye onima thanaka thiyenam eka galappala denna kioyala
-// etha  kota api dena name eka thiyena onima thanak avada karanava eka api ain akra eka eya automa danava
-
+   
 
   res.status(200).json(
     products
