@@ -389,13 +389,11 @@ export async function googleLogin(req, res) {
 
     const email = googleResponse.data.email;
 
-    // Check if user already exists
-    const usersList = await User.find({ email: email });
+    // Find the user by email
+    const user = await User.findOne({ email });
 
-
-    if (usersList.length > 0) {
-      const user = usersList[0];
-
+    if (user) {
+      // If user exists, create a JWT token with the user's details
       const userToken = jwt.sign(
         {
           email: user.email,
@@ -424,13 +422,14 @@ export async function googleLogin(req, res) {
       });
     }
 
-    // Create a new user if not found
+    // If user doesn't exist, create a new user.
+    // You might want to generate a random or a placeholder password for social logins
     const newUserData = {
-      email: email,
+      email,
       firstName: googleResponse.data.given_name,
       lastName: googleResponse.data.family_name,
       type: "customer",
-      password: "#ggggg",
+      password: "#ggggg", // Consider a secure placeholder or random string here.
       profilePic: googleResponse.data.picture,
     };
 
@@ -439,10 +438,42 @@ export async function googleLogin(req, res) {
 
     console.log("New user created:", newUser);
 
-    return res.json({ message: "User created successfully" });
+    // Optionally, you can sign a token right away after creation:
+    const newUserToken = jwt.sign(
+      {
+        email: newUser.email,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        isBlock: newUser.isBlock,
+        type: newUser.type,
+        profilePic: newUser.profilePic,
+      },
+      process.env.SECRET_KEY,
+      { expiresIn: "7d" }
+    );
+
+    return res.json({ 
+      message: "User created successfully", 
+      token: newUserToken,
+      user: {
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        type: newUser.type,
+        profilePic: newUser.profilePic,
+        email: newUser.email,
+      }
+    });
 
   } catch (error) {
     console.error("Google login error:", error);
+
+    // If error comes from axios (Google API call), you might want to forward the status code
+    if (error.response && error.response.data) {
+      return res.status(error.response.status).json({
+        message: error.response.data.error || "Error fetching Google user info"
+      });
+    }
+    
     return res.status(500).json({ message: "Google login failed" });
   }
 }
